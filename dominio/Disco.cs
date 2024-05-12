@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
+    //le agrego un comentario al archivo...
     public class Disco
     {
         public string titulo { get; set; }
