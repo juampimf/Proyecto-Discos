@@ -101,10 +101,12 @@
             // 
             // dtpFechaLanzamiento
             // 
+            this.dtpFechaLanzamiento.CustomFormat = "";
             this.dtpFechaLanzamiento.Location = new System.Drawing.Point(148, 137);
             this.dtpFechaLanzamiento.Name = "dtpFechaLanzamiento";
             this.dtpFechaLanzamiento.Size = new System.Drawing.Size(200, 20);
             this.dtpFechaLanzamiento.TabIndex = 8;
+            this.dtpFechaLanzamiento.Value = new System.DateTime(2024, 5, 23, 0, 0, 0, 0);
             // 
             // frmAltaDisco
             // 

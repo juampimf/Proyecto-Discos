@@ -33,12 +33,14 @@ namespace ProyectoDiscos
             Disco disco = new Disco();
             DiscoDatos datos = new DiscoDatos();
             
+            
 
             try
             {
                 disco.titulo = txtTitulo.Text;
                 disco.cantidadCanciones = int.Parse(txtCantidadCanciones.Text);
                 disco.fechaLanzamiento = dtpFechaLanzamiento.Value;
+               
 
 
                 datos.agregar(disco);
@@ -51,5 +53,7 @@ namespace ProyectoDiscos
                 throw ex;
             }
         }
+
+       
     }
 }

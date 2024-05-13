@@ -62,7 +62,8 @@ namespace DatosDb
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setarConsulta("insert into DISCOS (Titulo, CantidadCanciones, FechaLanzamiento) values('" + nuevo.titulo +"',"+ nuevo.cantidadCanciones +",'"+ nuevo.fechaLanzamiento +"')");
+                datos.setarConsulta("insert into DISCOS (Titulo, CantidadCanciones, FechaLanzamiento) values('" + nuevo.titulo +"',"+ nuevo.cantidadCanciones +",@FechaLanzamiento)");
+                datos.setearParametro("@FechaLanzamiento", nuevo.fechaLanzamiento);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
