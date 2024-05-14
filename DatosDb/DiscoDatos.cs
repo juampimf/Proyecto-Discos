@@ -35,7 +35,13 @@ namespace DatosDb
                     aux.titulo = (string)lector["Titulo"];
                     aux.fechaLanzamiento = (DateTime)lector["FechaLanzamiento"];
                     aux.cantidadCanciones = (int)lector["CantidadCanciones"];
-                    aux.urlImagenTapa = (string)lector["UrlImagenTapa"];
+
+                    //if(!(lector.IsDBNull(lector.GetOrdinal("Descripcion"))))  
+                    //aux.urlImagenTapa = (string)lector["UrlImagenTapa"]; //esto es una forma de hacerlo
+
+                    if (!(lector["UrlImagenTapa"]is DBNull))
+                        aux.urlImagenTapa = (string)lector["UrlImagenTapa"]; // y esta es otra
+
                     aux.TipoEdicion = new TipoEdicion();
                     aux.TipoEdicion.Descripcion = (string)lector["TipoEdicion"];
                     aux.GeneroMusical = new Estilo();
@@ -62,8 +68,11 @@ namespace DatosDb
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setarConsulta("insert into DISCOS (Titulo, CantidadCanciones, FechaLanzamiento) values('" + nuevo.titulo +"',"+ nuevo.cantidadCanciones +",@FechaLanzamiento)");
+                datos.setarConsulta("insert into DISCOS (Titulo, CantidadCanciones, FechaLanzamiento, IdEstilo, IdTIpoEdicion, UrlImagenTapa) values('" + nuevo.titulo +"',"+ nuevo.cantidadCanciones +", @FechaLanzamiento, @IdEstilo, @IdTipoEdicion,@UrlImagenTapa)");
+                datos.setearParametro("@UrlImagenTapa", nuevo.urlImagenTapa);
                 datos.setearParametro("@FechaLanzamiento", nuevo.fechaLanzamiento);
+                datos.setearParametro("@IdEstilo", nuevo.GeneroMusical.Id);
+                datos.setearParametro("@IdTipoEdicion", nuevo.TipoEdicion.Id);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)

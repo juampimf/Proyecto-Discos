@@ -23,11 +23,7 @@ namespace ProyectoDiscos
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DiscoDatos datos = new DiscoDatos();
-            listaDiscos = datos.listar();
-            dgvDiscos.DataSource = listaDiscos;
-            dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
-            cargarImagen(listaDiscos[0].urlImagenTapa);
+            cargar();
         }
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
@@ -36,6 +32,22 @@ namespace ProyectoDiscos
             cargarImagen(Seleccionado.urlImagenTapa);
 
             
+        }
+
+        private void cargar()
+        {
+            DiscoDatos datos = new DiscoDatos();
+            try
+            {
+                listaDiscos = datos.listar();
+                dgvDiscos.DataSource = listaDiscos;
+                dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+                cargarImagen(listaDiscos[0].urlImagenTapa);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void cargarImagen(string imagen)
@@ -55,6 +67,8 @@ namespace ProyectoDiscos
         {
             frmAltaDisco alta = new frmAltaDisco();
             alta.ShowDialog();
+            cargar();
+
         }
     }
 }
