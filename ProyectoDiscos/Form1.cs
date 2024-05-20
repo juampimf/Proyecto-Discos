@@ -24,12 +24,18 @@ namespace ProyectoDiscos
         private void Form1_Load(object sender, EventArgs e)
         {
             cargar();
+            cboCampo.Items.Add("Titulo");
+            cboCampo.Items.Add("CantidadCanciones");
+            cboCampo.Items.Add("GeneroMusical");
         }
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
         {
+            if (dgvDiscos.CurrentRow != null)
+            {
            Disco Seleccionado = (Disco) dgvDiscos.CurrentRow.DataBoundItem;
             cargarImagen(Seleccionado.urlImagenTapa);
+            }
 
             
         }
@@ -41,7 +47,8 @@ namespace ProyectoDiscos
             {
                 listaDiscos = datos.listar();
                 dgvDiscos.DataSource = listaDiscos;
-                dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+                ocultarColumnas();
+
                 cargarImagen(listaDiscos[0].urlImagenTapa);
             }
             catch (Exception ex)
@@ -49,7 +56,11 @@ namespace ProyectoDiscos
                 MessageBox.Show(ex.ToString());
             }
         }
-
+        public void ocultarColumnas()
+        {
+            dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+            dgvDiscos.Columns["Id"].Visible = false;
+        }
         private void cargarImagen(string imagen)
         {
             try
@@ -70,5 +81,108 @@ namespace ProyectoDiscos
             cargar();
 
         }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            Disco seleccionado;
+            seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+
+            frmAltaDisco modificar = new frmAltaDisco(seleccionado);
+            modificar.ShowDialog();
+            cargar();
+        }
+
+        private void btnEliminarFisico_Click(object sender, EventArgs e)
+        {
+            DiscoDatos datos = new DiscoDatos();
+            Disco seleccionado;
+            try
+            {
+                DialogResult respuesta = MessageBox.Show("Estas seguro de eliminar este disco?", "Eliminando", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (respuesta == DialogResult.Yes)
+                {
+                seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+                datos.eliminar(seleccionado.Id);
+                cargar();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnFiltro_Click(object sender, EventArgs e)
+        {
+            DiscoDatos datos = new DiscoDatos();
+            try
+            {
+            string campo = cboCampo.SelectedItem.ToString();
+            string criterio = cboCriterio.SelectedItem.ToString();
+            string filtro = txtFiltroAvanzado.Text;
+                dgvDiscos.DataSource = datos.filtrar( campo, criterio, filtro);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
+
+       
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            List<Disco> listaFiltrada;
+            string filtro = txtFiltro.Text;
+
+            if (filtro.Length >= 3)
+            {
+                listaFiltrada = listaDiscos.FindAll(x => x.titulo.ToLower().Contains(filtro.ToLower()) || x.GeneroMusical.ToString().ToLower().Contains(filtro.ToLower()));
+            }
+            else
+            {
+                listaFiltrada = listaDiscos;
+            }
+
+
+            dgvDiscos.DataSource = null;
+            dgvDiscos.DataSource = listaFiltrada;
+            ocultarColumnas();
+        }
+
+        private void txtFiltro_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void cboCampo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string opcion = cboCampo.SelectedItem.ToString();
+
+            if (opcion == "CantidadCanciones")
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Mayor a");
+                cboCriterio.Items.Add("Menor a");
+                cboCriterio.Items.Add("Igual a");
+            }
+            else
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Comienza con");
+                cboCriterio.Items.Add("Termina con");
+                cboCriterio.Items.Add("Contiene");
+            }
+        }
+
+        
     }
 }

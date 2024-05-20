@@ -86,6 +86,7 @@
             this.txtCantidadCanciones.Name = "txtCantidadCanciones";
             this.txtCantidadCanciones.Size = new System.Drawing.Size(100, 20);
             this.txtCantidadCanciones.TabIndex = 1;
+            this.txtCantidadCanciones.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCantidadCanciones_KeyPress);
             // 
             // btnAceptar
             // 

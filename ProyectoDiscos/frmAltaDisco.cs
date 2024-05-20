@@ -15,9 +15,15 @@ namespace ProyectoDiscos
 {
     public partial class frmAltaDisco : Form
     {
+        private Disco discos = null;
         public frmAltaDisco()
         {
             InitializeComponent();
+        }
+        public frmAltaDisco(Disco disco)
+        {
+            InitializeComponent();
+            this.discos = disco; 
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -31,29 +37,43 @@ namespace ProyectoDiscos
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
         {
-            Disco disco = new Disco();
+            //Disco disco = new Disco();
             DiscoDatos datos = new DiscoDatos();
             
             
 
             try
-            {
-                disco.titulo = txtTitulo.Text;
-                disco.cantidadCanciones = int.Parse(txtCantidadCanciones.Text);
-                disco.fechaLanzamiento = dtpFechaLanzamiento.Value;
-                disco.GeneroMusical = (Estilo)cboGeneroMusical.SelectedItem;
-                disco.TipoEdicion = (TipoEdicion)cboTipoEdicion.SelectedItem;
-                disco.urlImagenTapa = txtUrlImagenTapa.Text;
+            
+               {
+                if (discos == null) 
+                    discos = new Disco();  
+                
+                discos.titulo = txtTitulo.Text;
+                discos.cantidadCanciones = int.Parse(txtCantidadCanciones.Text);
+                discos.fechaLanzamiento = dtpFechaLanzamiento.Value;
+                discos.urlImagenTapa = txtUrlImagenTapa.Text;
+                discos.GeneroMusical = (Estilo)cboGeneroMusical.SelectedItem;
+                discos.TipoEdicion = (TipoEdicion)cboTipoEdicion.SelectedItem;
 
+                if (discos.Id != 0)
+                {
+                datos.modificar(discos);
+                MessageBox.Show("Modificado exitosamente");
 
-                datos.agregar(disco);
+                }
+                else
+                {
+
+                datos.agregar(discos);
                 MessageBox.Show("Agregado exitosamente");
+                }
+
                 Close();
             }
             catch (Exception ex)
             {
-
-                    MessageBox.Show("agrega la cantidad de canciones por favor");
+                throw ex;
+              //  MessageBox.Show(ex.ToString());
             }
         }
 
@@ -65,7 +85,27 @@ namespace ProyectoDiscos
             try
             {
                 cboGeneroMusical.DataSource = estiloDatos.listar();
+                cboGeneroMusical.ValueMember = "Id";
+                cboGeneroMusical.DisplayMember = "Descripcion";
                 cboTipoEdicion.DataSource = tipoEdicionDatos.listar();
+                cboTipoEdicion.ValueMember = "Id";
+                cboTipoEdicion.DisplayMember = "Descripcion";
+
+
+
+                if (discos != null) 
+                {
+                   txtTitulo.Text = discos.titulo;
+                   txtCantidadCanciones.Text = discos.cantidadCanciones.ToString ();
+                   dtpFechaLanzamiento.Value = discos.fechaLanzamiento;
+                   txtUrlImagenTapa.Text = discos.urlImagenTapa;
+                   cargarImagen(discos.urlImagenTapa);
+                   cboGeneroMusical.SelectedValue = discos.GeneroMusical.Id;
+                   cboTipoEdicion.SelectedValue = discos.TipoEdicion.Id;
+
+
+
+                }
             }
             catch (Exception ex)
             {
@@ -91,5 +131,16 @@ namespace ProyectoDiscos
                 pbxDiscos.Load("https://th.bing.com/th/id/OIP.3MyS_cOKsArFhg6L4ebnggHaHa?w=180&h=180&c=7&r=0&o=5&pid=1.7");
             }
         }
+
+        private void txtCantidadCanciones_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar >= 32 && e.KeyChar <= 47) || (e.KeyChar >= 58 && e.KeyChar <= 255))
+            {
+                MessageBox.Show("Solo números", "alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                e.Handled = true;
+                return;
+            }
+        }
     }
 }
+    
