@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatosDb;
+using System.IO;
+using System.Configuration;        
 
 
 namespace ProyectoDiscos
@@ -16,6 +18,7 @@ namespace ProyectoDiscos
     public partial class frmAltaDisco : Form
     {
         private Disco discos = null;
+        private OpenFileDialog archivo = null;
         public frmAltaDisco()
         {
             InitializeComponent();
@@ -67,6 +70,10 @@ namespace ProyectoDiscos
                 datos.agregar(discos);
                 MessageBox.Show("Agregado exitosamente");
                 }
+
+                //Guardo imagen si la levantó localmente:
+                if (archivo != null && !(txtUrlImagenTapa.Text.ToUpper().Contains("HTTP")))
+                    File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagenes"] + archivo.SafeFileName);
 
                 Close();
             }
@@ -139,6 +146,20 @@ namespace ProyectoDiscos
                 MessageBox.Show("Solo números", "alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 e.Handled = true;
                 return;
+            }
+        }
+
+        private void btnAgregarImagen_Click(object sender, EventArgs e)
+        {
+            archivo = new OpenFileDialog();
+            archivo.Filter = "jpg|*.jpg; |png|*.png";
+           if (archivo.ShowDialog() == DialogResult.OK)
+            {
+                txtUrlImagenTapa.Text = archivo.FileName;
+                cargarImagen(archivo.FileName);
+
+                //guardo imagen
+                //File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagenes"] + archivo.SafeFileName);
             }
         }
     }

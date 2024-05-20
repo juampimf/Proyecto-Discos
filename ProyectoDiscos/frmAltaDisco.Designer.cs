@@ -43,6 +43,7 @@
             this.txtUrlImagenTapa = new System.Windows.Forms.TextBox();
             this.lblUrlImagenTapa = new System.Windows.Forms.Label();
             this.pbxDiscos = new System.Windows.Forms.PictureBox();
+            this.btnAgregarImagen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbxDiscos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -172,18 +173,29 @@
             // 
             // pbxDiscos
             // 
-            this.pbxDiscos.Location = new System.Drawing.Point(354, 23);
+            this.pbxDiscos.Location = new System.Drawing.Point(448, 12);
             this.pbxDiscos.Name = "pbxDiscos";
             this.pbxDiscos.Size = new System.Drawing.Size(262, 246);
             this.pbxDiscos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxDiscos.TabIndex = 14;
             this.pbxDiscos.TabStop = false;
             // 
+            // btnAgregarImagen
+            // 
+            this.btnAgregarImagen.Location = new System.Drawing.Point(263, 121);
+            this.btnAgregarImagen.Name = "btnAgregarImagen";
+            this.btnAgregarImagen.Size = new System.Drawing.Size(31, 23);
+            this.btnAgregarImagen.TabIndex = 15;
+            this.btnAgregarImagen.Text = "+";
+            this.btnAgregarImagen.UseVisualStyleBackColor = true;
+            this.btnAgregarImagen.Click += new System.EventHandler(this.btnAgregarImagen_Click);
+            // 
             // frmAltaDisco
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 339);
+            this.ClientSize = new System.Drawing.Size(747, 339);
+            this.Controls.Add(this.btnAgregarImagen);
             this.Controls.Add(this.pbxDiscos);
             this.Controls.Add(this.txtUrlImagenTapa);
             this.Controls.Add(this.lblUrlImagenTapa);
@@ -226,5 +238,6 @@
         private System.Windows.Forms.TextBox txtUrlImagenTapa;
         private System.Windows.Forms.Label lblUrlImagenTapa;
         private System.Windows.Forms.PictureBox pbxDiscos;
+        private System.Windows.Forms.Button btnAgregarImagen;
     }
 }
