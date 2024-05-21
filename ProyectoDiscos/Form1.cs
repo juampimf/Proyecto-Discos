@@ -116,15 +116,61 @@ namespace ProyectoDiscos
             }
         }
 
+        private bool validarFiltro()
+        {
+            if(cboCampo.SelectedIndex == -1)
+            {
+                MessageBox.Show("Por Favor, seleccione el campo para filtrar.");
+                return true;
+            }
+            if(cboCriterio.SelectedIndex == -1)
+            {
+                MessageBox.Show("Por Favor, seleccione el criterio para filtrar.");
+                return true;
+            }
+            if (cboCampo.SelectedItem.ToString() == "CantidadCanciones")
+            {
+                if (string.IsNullOrEmpty(txtFiltroAvanzado.Text))
+                {
+                    MessageBox.Show("Debes cargar el filtro para numéricos...");
+                     return true;
+                }
+                if (!soloNumeros(txtFiltroAvanzado.Text))
+                {
+
+                    MessageBox.Show("Solo nros para filtrar por un campo numerico...");
+                    return true;
+                }
+                    
+
+                
+
+            }
+            return false;
+        }
+
+        private bool soloNumeros(string cadena)
+        {
+            foreach (char caracter in cadena)
+            {
+                if(!(char.IsNumber(caracter)))
+                    return false;
+            }
+            return true;
+        }
+
         private void btnFiltro_Click(object sender, EventArgs e)
         {
             DiscoDatos datos = new DiscoDatos();
             try
             {
-            string campo = cboCampo.SelectedItem.ToString();
-            string criterio = cboCriterio.SelectedItem.ToString();
-            string filtro = txtFiltroAvanzado.Text;
-                dgvDiscos.DataSource = datos.filtrar( campo, criterio, filtro);
+                if (validarFiltro())
+                    return;
+
+                string campo = cboCampo.SelectedItem.ToString();
+                string criterio = cboCriterio.SelectedItem.ToString();
+                string filtro = txtFiltroAvanzado.Text;
+                    dgvDiscos.DataSource = datos.filtrar( campo, criterio, filtro);
 
 
             }
